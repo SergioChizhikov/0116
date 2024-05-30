@@ -29,6 +29,15 @@
   let keywords = sites[site];
   let keyword = keywords[getRandom(0, keywords.length)];
 
+  if (mainLogo !== null) {
+    document.cookie = `site=${site}`;
+  } else if (location.hostname == "www.zapmeta.com") {
+    site = getCookie("site");
+  } else {
+    site = location.hostname;
+  }
+
+
   //Работаем на главной странице поисковика
   if (mainLogo !== null) {
     let i = 0;
@@ -51,6 +60,10 @@
         if (getRandom(0, 101) >= 80) {
           location.href = "https://www.zapmeta.com";
         }
+        
+        if (links.length == 0) {
+          location.href = site;
+        }
 
         if (link.href.includes(site)) {
           link.click();
@@ -70,6 +83,7 @@
         setTimeout(() => {
           link.click();
         }, getRandom(2500, 4000))
+        break;
       }
     }
     if (document.querySelector(".pagination__item--active").innerText == "4") {
@@ -83,7 +97,12 @@
 
     }
   }
-
+  function getCookie(name) {
+    let matches = document.cookie.match(new RegExp(
+      "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+  }
 
 
   function getRandom(min, max) {
