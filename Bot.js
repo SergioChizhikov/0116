@@ -6,6 +6,8 @@
 // @author       Chizhikov Sergey
 // @match        https://www.zapmeta.com/*
 // @match        https://napli.ru/*
+// @match        https://motoreforma.com/*
+// @match        https://kiteuniverse.ru/*
 // @grant        none
 // ==/UserScript==
 
@@ -16,11 +18,16 @@
   let menu = document.getElementsByClassName("search-header__button-menu")[0];
   let mainLogo = document.querySelector(".jumbotron__logo");
   let links = document.links;
-  let keywords = ["10 самых популярных шрифтов от Google", "Отключение редакций и ревизий в WordPress",
-                  "Vite — классный и новый продукт","Вывод произвольных типов записей и полей"];
+  let sites = {
+    "napli.ru": ["10 самых популярных шрифтов от Google", "Отключение редакций и ревизий в WordPress",
+                 "Vite — классный и новый продукт","Вывод произвольных типов записей и полей"],
+    "motoreforma.com": ["мотореформа", "тюнинг Maverick X3", "запчасти для CAN-AM"],
+    "kiteuniverse.ru": ["Kite Universe Россия", "Красота. Грация. Интеллект", "Мастер класс Воздушный змей"],
+  }
+  let keys = Object.keys(sites);
+  let site = keys[getRandom(0, keys.length)];
+  let keywords = sites[site];
   let keyword = keywords[getRandom(0, keywords.length)];
-  //let keyword = "Git для всех платформ";
-
 
   //Работаем на главной странице поисковика
   if (mainLogo !== null) {
@@ -35,17 +42,17 @@
       }
     }, 300)
     //Работаем на целевом сайте
-    } else if (location.hostname == "napli.ru") {
+    } else if (location.hostname == site) {
 
       setInterval(() => {
         let index = getRandom(0, links.length);
         let link = links[index];
-        
+
         if (getRandom(0, 101) >= 80) {
           location.href = "https://www.zapmeta.com";
         }
-        
-        if (link.href.includes("napli.ru")) {
+
+        if (link.href.includes(site)) {
           link.click();
         }
       }, getRandom(2000, 3500))
@@ -56,7 +63,7 @@
   else {
     let nextPage = true;
     for (let i = 0; i < links.length; i++) {
-      if (links[i].href.includes("napli.ru")) {
+      if (links[i].href.includes(site)) {
         let link = links[i];
         nextPage = false;
         console.log("Нашел строку " + link);
@@ -77,7 +84,11 @@
     }
   }
 
+
+
   function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
   }
+
+
 })();
