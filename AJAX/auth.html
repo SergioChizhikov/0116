@@ -16,7 +16,7 @@
       rel="stylesheet"
     />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-    <title>Страница регистрации пользователя</title>
+    <title>Страница авторизации пользователя</title>
     <style>
       body {
         background-color: rgb(200, 248, 248);
@@ -65,46 +65,9 @@
     </style>
   </head>
   <body>
-    <section class="mx-auto mt-5 col-5">
-      <h1 class="text-center py-5">Страница регистрации</h1>
-      <div><a href="auth.html"><button class="btn btn-danger my-5">На страницу авторизации</button></a></div>
+    <section class="mx-auto mt-5 col-4">
+      <h1 class="text-center py-5">Страница авторизации</h1>
       <form onsubmit="sendForm(this); return false;">
-        <div class="input-group mb-4">
-          <div class="input-group-prepend">
-            <div class="input-group-text">
-              <span class="material-icons form-icon"> person </span>
-            </div>
-          </div>
-          <input
-            type="text"
-            class="form-control form-control-lg"
-            placeholder="Ваше имя"
-            required
-            autocomplete="username"
-            minlength="3"
-            onfocus="this.placeholder=''"
-            onblur="this.placeholder='Ваше имя'"
-            name="name"
-          />
-        </div>
-        <div class="input-group mb-4">
-          <div class="input-group-prepend">
-            <div class="input-group-text">
-              <span class="material-icons form-icon"> person </span>
-            </div>
-          </div>
-          <input
-            type="text"
-            class="form-control form-control-lg"
-            placeholder="Ваша фамилия"
-            required
-            autocomplete="family-name"
-            minlength="3"
-            onfocus="this.placeholder=''"
-            onblur="this.placeholder='Ваша фамилия'"
-            name="lastname"
-          />
-        </div>
         <div class="input-group mb-4">
           <div class="input-group-prepend">
             <div class="input-group-text">
@@ -133,12 +96,12 @@
             id="formPass"
             type="password"
             class="form-control form-control-lg"
-            placeholder="Придумайте пароль"
+            placeholder="Вспомните пароль"
             required
-            autocomplete="new-password"
+            autocomplete="current-password"
             minlength="3"
             onfocus="this.placeholder=''"
-            onblur="this.placeholder='Придумайте пароль'"
+            onblur="this.placeholder='Вспомните пароль'"
             style="border-top-right-radius: 0.3rem; border-bottom-right-radius: 0.3rem"
             name="pass"
           />
@@ -156,28 +119,24 @@
             visibility_off
           </span>
         </div>
-        <div class="form-check mb-4">
-          <input type="checkbox" class="form-check-input" required />
-          <label for="" class="form-check-label">Согласие на обработку персональных данных</label>
-        </div>
-        <p id="info" style="color: red; margin-left: -1.25rem"></p>
-        <input type="submit" value="Зарегистрироваться" class="btn btn-block btn-lg form-btn" />
+        <p id="info" style="color: red; margin-left: 1.25rem"></p>
+        <input type="submit" value="Войти" class="btn btn-block btn-lg form-btn" />
       </form>
     </section>
 
     <script>
       async function sendForm(form) {
-        let response = await fetch("php/reg_obr.php", {
+        let response = await fetch("php/auth_obr.php", {
           method: "POST",
           body: new FormData(form),
         });
 
         let result = await response.text();
 
-        if (result == "ok") {
-          alert("Вы успешно зарегистрированы!");
-        } else if (result == "exist") {
-          info.innerText = "Похоже пользователь уже зарегистрирован";
+        if (result == "success") {
+          location.href = "lk.php";
+        } else if (result == "rejected") {
+          info.innerText = "Логин или пароль неверные";
         }
       }
     </script>
