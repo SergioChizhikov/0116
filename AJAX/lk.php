@@ -20,8 +20,9 @@
 
     .section {
       margin: auto;
-      padding: 1rem;
+      padding: 3rem;
       max-width: 1200px;
+      color: orangered;
     }
 
     h1 {
@@ -82,11 +83,35 @@
       border: 1px solid blue;
       border-radius: 6px;
       cursor: pointer;
+
     }
 
     p>span:nth-child(4):hover {
       color: white;
       background-color: blue;
+    }
+
+    .exit-btn {
+      display: block;
+      max-width: fit-content;
+      margin-top: 8rem;
+      text-decoration: none;
+      text-align: center;
+      color: orangered;
+      margin-left: 1rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      background-color: lightblue;
+      border: 1px solid orangered;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .exit-btn:hover {
+      color: white;
+      background-color: orangered;
     }
   </style>
 </head>
@@ -96,23 +121,24 @@
     <h1>Личный кабинет</h1>
 
     <p>Id:
-      <span><?php echo $_SESSION["id"]; ?></span>
+      <span> <?php echo $_SESSION["id"]; ?></span>
     </p>
     <p>Email:
-      <span><?php echo $_SESSION["email"]; ?></span>
+      <span> <?php echo $_SESSION["email"]; ?></span>
     </p>
     <p>Имя пользователя:
-      <span><?php echo $_SESSION["name"]; ?></span>
+      <span> <?php echo $_SESSION["name"]; ?></span>
       <span class="edit-btn"> Изменить </span>
-      <span class="save-btn" hidden> Сохранить </span>
+      <span class="save-btn" hidden data-item="name"> Сохранить </span>
       <span class="cancel-btn" hidden> Отменить </span>
     </p>
     <p>Фамилия пользователя:
-      <span><?php echo $_SESSION["lastname"]; ?></span>
+      <span> <?php echo $_SESSION["lastname"]; ?></span>
       <span class="edit-btn"> Изменить </span>
-      <span class="save-btn" hidden> Сохранить </span>
+      <span class="save-btn" hidden data-item="lastname"> Сохранить </span>
       <span class="cancel-btn" hidden> Отменить </span>
     </p>
+    <a class="exit-btn" href="php/exit_obr.php"> Выход </a>
   </section>
 
   <script>
@@ -130,7 +156,33 @@
         cancel_buttons[i].hidden = false;
       })
 
-      
+      cancel_buttons[i].addEventListener("click", () => {
+        edit_buttons[i].previousElementSibling.innerText = inputValue;
+        edit_buttons[i].hidden = false;
+        save_buttons[i].hidden = true;
+        cancel_buttons[i].hidden = true;
+      })
+
+      save_buttons[i].addEventListener("click", async () => {
+        let newInputValue = edit_buttons[i].previousElementSibling.firstElementChild.value;
+        edit_buttons[i].previousElementSibling.innerText = newInputValue;
+
+        edit_buttons[i].hidden = false;
+        save_buttons[i].hidden = true;
+        cancel_buttons[i].hidden = true;
+
+        let formData = new FormData();
+        formData.append("value", newInputValue);
+        let item = save_buttons[i].dataset.item;
+        formData.append("item", item);
+
+        let response = await fetch("php/lk_obr.php", {
+          method: "POST",
+          body: formData
+        });
+      })
+
+
     }
   </script>
 </body>
