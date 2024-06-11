@@ -66,7 +66,29 @@
               role="tabpanel"
               aria-labelledby="v-pills-profile-tab"
             >
-              Страница профиля
+              <div class="row">
+                <div class="col-md-3">
+                  <img
+                    src="https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436178.jpg?&w=500"
+                    alt=""
+                    class="img-fluid"
+                  />
+                </div>
+                <div class="col-md-9">
+                  <h1 class="text-center my-5">Профиль пользователя</h1>
+                  <h2>
+                    <span>Фамилия и имя: </span>
+                    <span> Иванов Иван </span>
+                  </h2>
+                  <h3>Email: ivan@ya.ru</h3>
+                  <p>Id: 2</p>
+                  <p>
+                    Рассказываю о себе: Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Veritatis nulla distinctio ea dicta harum vel odit laborum iure consequuntur sit
+                    quae saepe deleniti, expedita ipsam ratione id qui? Deleniti, eveniet!
+                  </p>
+                </div>
+              </div>
             </div>
             <div
               class="tab-pane fade"
@@ -74,7 +96,92 @@
               role="tabpanel"
               aria-labelledby="v-pills-messages-tab"
             >
-              Страница сообщений
+              <div class="row">
+                <div class="col-md-5">
+                  <div class="row mb-3 border-bottom">
+                    <div class="col-12">
+                      <div class="media">
+                        <img class="img-fluid mr-2" src="../../img/r7.jpg" alt="" />
+                        <div class="media-body">
+                          <h5>ПалПалыч</h5>
+                          <p>Дружище, ответь же мне...</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-3 border-bottom">
+                    <div class="col-12">
+                      <div class="media">
+                        <img class="img-fluid mr-2" src="../../img/r11.jpg" alt="" />
+                        <div class="media-body">
+                          <h5>Мария Павловна</h5>
+                          <p>Иван, вы срочно нужны в офисе!</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-3 border-bottom">
+                    <div class="col-12">
+                      <div class="media">
+                        <img class="img-fluid mr-2" src="../../img/r12.jpg" alt="" />
+                        <div class="media-body">
+                          <h5>Макарыч</h5>
+                          <p>Поехали завтра на карпа?</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-3 border-bottom">
+                    <div class="col-12">
+                      <div class="media">
+                        <img class="img-fluid mr-2" src="../../img/r5.jpg" alt="" />
+                        <div class="media-body">
+                          <h5>Дорогая</h5>
+                          <p>Пошли завтра в ресторан?</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-7">
+                  <div class="row pl-3">
+                    <div class="col-12 border">
+                      <div class="row mb-3">
+                        <div class="col-4">
+                          <img class="img-fluid mr-2" src="../../img/r11.jpg" alt="" />
+                        </div>
+                        <div class="col-8">
+                          <h5>Мария Павловна</h5>
+                          <p>Иван, вы срочно нужны в офисе!</p>
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col-4">
+                          <img
+                            class="img-fluid mr-2"
+                            src="https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436178.jpg?&w=70"
+                            alt=""
+                          />
+                        </div>
+                        <div class="col-8">
+                          <h5>Я</h5>
+                          <p>Уже сижу на берегу с удочкой.</p>
+                        </div>
+                      </div>
+                      <div class="row mt-5">
+                        <form action="" class="col-12 pl-0 pr-0">
+                          <textarea
+                            class="form-control"
+                            placeholder="Текст сообщения"
+                            rows="3"
+                          ></textarea>
+                          <button class="btn btn-block btn-danger mt-5">Отправить</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div
               class="tab-pane fade"
@@ -82,13 +189,16 @@
               role="tabpanel"
               aria-labelledby="v-pills-settings-tab"
             >
-              Страница настроек
+             <div class="d-flex pl-5 pr-5 mt-5 flex-wrap">
+              <div class="btn btn-block btn-info">Выключить</div>
+              <div class="btn btn-block btn-info">Включить</div>
+              <div class="btn btn-block btn-info">Удалить</div>
+             </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-
 
     <script
       src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
@@ -101,8 +211,19 @@
       crossorigin="anonymous"
     ></script>
 
-        <script>
+    <script>
       let pathname = location.pathname.split("/")[2];
+
+      addEventListener("popstate", () => {
+        let pathPopstate = location.pathname.split("/")[2];
+        if (pathPopstate == "profile") {
+          $("#profileTab").tab("show");
+        } else if (pathPopstate == "messages") {
+          $("#messagesTab").tab("show");
+        } else if (pathPopstate == "settings") {
+          $("#settingsTab").tab("show");
+        }
+      });
 
       if (pathname == "profile") {
         $("#v-pills-profile").tab("show");
@@ -110,6 +231,8 @@
         $("#v-pills-messages").tab("show");
       } else if (pathname == "settings") {
         $("#v-pills-settings").tab("show");
+      } else {
+        location.href = location.protocol + "//" + location.host;
       }
 
       document.getElementById(pathname + "Tab").classList.add("active");
@@ -119,8 +242,8 @@
         navLinks[i].addEventListener("click", () => {
           let page = navLinks[i].getAttribute("aria-controls").split("v-pills-")[1];
           console.log(page);
-          history.pushState('', '', page);
-        })
+          history.pushState("", "", page);
+        });
       }
     </script>
   </body>
