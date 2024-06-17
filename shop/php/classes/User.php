@@ -59,7 +59,6 @@ class User
     $pass = trim($pass);
 
     $result = $mysqli->query("SELECT * FROM `users` WHERE `email`='$email'");
-
     $result = $result->fetch_assoc();
 
    if (password_verify($pass, $result["pass"])) {
@@ -68,6 +67,14 @@ class User
    } else {
       return json_encode(["result" => "error"]);
    }
+    // $sql = "SELECT * FROM `users` WHERE `email`= ?";
+    // $stmt = $mysqli->prepare($sql);
+    // $stmt->bind_param("s", $email);
+    // $stmt->execute();
+    // $result = $stmt->get_result();
+    // $result = $result->fetch_assoc();
+    // var_dump($result);
+
   }
 
   //Статический метод получения данных пользователя
@@ -77,5 +84,17 @@ class User
     $result = $mysqli->query("SELECT `id`, `name`, `lastname`, `email` FROM `users` WHERE `id`='$userId'");
     $result = $result->fetch_assoc();
     return json_encode($result);
+  }
+
+  //Статический метод получения данных всех пользователей
+  static function getUsers()
+  {
+    global $mysqli;
+
+    $result = $mysqli->query("SELECT `id`, `name`, `lastname`, `email` FROM `users` WHERE 1");
+    while ($row = $result->fetch_assoc()) {
+      $users[] = $row;
+    }
+    return json_encode($users);
   }
 }
