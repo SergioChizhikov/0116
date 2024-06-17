@@ -78,10 +78,14 @@
                   <h1 class="text-center my-5">Профиль пользователя</h1>
                   <h2>
                     <span>Фамилия и имя: </span>
-                    <span> Иванов Иван </span>
+                    <span id="userName"></span>
                   </h2>
-                  <h3>Email: ivan@ya.ru</h3>
-                  <p>Id: 2</p>
+                  <h3>Email:
+                    <span id="userMail"></span>
+                  </h3>
+                  <p>Id:
+                    <span id="userId"></span>
+                  </p>
                   <p>
                     Рассказываю о себе: Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Veritatis nulla distinctio ea dicta harum vel odit laborum iure consequuntur sit
@@ -189,11 +193,11 @@
               role="tabpanel"
               aria-labelledby="v-pills-settings-tab"
             >
-             <div class="d-flex pl-5 pr-5 mt-5 flex-wrap">
-              <div class="btn btn-block btn-info">Выключить</div>
-              <div class="btn btn-block btn-info">Включить</div>
-              <div class="btn btn-block btn-info">Удалить</div>
-             </div>
+              <div class="d-flex pl-5 pr-5 mt-5 flex-wrap">
+                <div class="btn btn-block btn-info">Выключить</div>
+                <div class="btn btn-block btn-info">Включить</div>
+                <div class="btn btn-block btn-info">Удалить</div>
+              </div>
             </div>
           </div>
         </div>
@@ -214,6 +218,11 @@
     <script>
       let pathname = location.pathname.split("/")[2];
 
+      async function getUser() {
+        let response = await fetch("/getUser");
+        return await response.json();
+      }
+
       addEventListener("popstate", () => {
         let pathPopstate = location.pathname.split("/")[2];
         if (pathPopstate == "profile") {
@@ -226,6 +235,11 @@
       });
 
       if (pathname == "profile") {
+        getUser().then((user) => {
+          userName = ``
+          console.log(user);
+        });
+
         $("#v-pills-profile").tab("show");
       } else if (pathname == "messages") {
         $("#v-pills-messages").tab("show");
