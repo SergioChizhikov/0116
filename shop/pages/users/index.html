@@ -80,10 +80,12 @@
                     <span>Фамилия и имя: </span>
                     <span id="userName"></span>
                   </h2>
-                  <h3>Email:
+                  <h3>
+                    Email:
                     <span id="userMail"></span>
                   </h3>
-                  <p>Id:
+                  <p>
+                    Id:
                     <span id="userId"></span>
                   </p>
                   <p>
@@ -186,6 +188,21 @@
                   </div>
                 </div>
               </div>
+              <div class="row mt-5">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">Id</th>
+                      <th scope="col">Имя</th>
+                      <th scope="col">Фамилия</th>
+                      <th scope="col">Email</th>
+                    </tr>
+                  </thead>
+                  <tbody id="usersListTable">
+                    <!-- Данные из бд -->
+                  </tbody>
+                </table>
+              </div>
             </div>
             <div
               class="tab-pane fade"
@@ -222,6 +239,10 @@
         let response = await fetch("/getUser");
         return await response.json();
       }
+      async function getUsers() {
+        let response = await fetch("/getUsers");
+        return await response.json();
+      }
 
       addEventListener("popstate", () => {
         let pathPopstate = location.pathname.split("/")[2];
@@ -236,12 +257,27 @@
 
       if (pathname == "profile") {
         getUser().then((user) => {
-          userName = ``
+          userName.innerText = `${user.lastname} ${user.name}`;
+          userMail.innerText = `${user.email}`;
+          userId.innerText = `${user.id}`;
           console.log(user);
         });
 
         $("#v-pills-profile").tab("show");
       } else if (pathname == "messages") {
+        getUsers().then((users) => {
+          for (let i = 0; i < users.length; i++) {
+            usersListTable.innerHTML += `
+              <tr>
+                <th scope="row">${users[i].id}</th>
+                <td>${users[i].name}</td>
+                <td>${users[i].lastname}</td>
+                <td>${users[i].email}</td>
+              </tr>
+            `;
+          }
+          console.log(users);
+        });
         $("#v-pills-messages").tab("show");
       } else if (pathname == "settings") {
         $("#v-pills-settings").tab("show");
